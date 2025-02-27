@@ -1,7 +1,9 @@
 "use client";
 
+import { useTaskContext } from "../context/taskContext";
+
 export default function FilterButtons() {
-  //   const { categories, activeFilter, setFilter } = useTaskContext();
+  const { categories, activeFilter, setFilter } = useTaskContext();
 
   // Botones de filtro predeterminados
   const defaultFilters = [
@@ -75,14 +77,41 @@ export default function FilterButtons() {
         {defaultFilters.map((filter) => (
           <button
             key={filter.id}
-            className={`flex items-center px-4 py-2 rounded-full text-sm font-medium 
-                transition-all duration-200`}
+            onClick={() => setFilter(filter.id)}
+            className={`flex items-center text-gray-800 px-4 py-2 rounded-full text-sm font-medium 
+                transition-all duration-200 ${activeFilter === filter.id ?
+                  'bg-indigo-200 text-indigo-800 shadow-sm' :
+                  'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
           >
             {filter.icon}
             {filter.label}
           </button>
         ))}
       </div>
+
+      {categories.length > 0 && (
+        <div>
+          <p className="text-sm font-medium text-gray-700 mb-2">Por categoría:</p>
+          <div className="flex flex-wrap gap-2">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setFilter(category)}
+                className={`
+                  px-4 py-2 rounded-full text-sm font-medium
+                  transition-all duration-200
+                  ${activeFilter === category 
+                    ? 'bg-purple-100 text-purple-800 shadow-sm' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}
+                `}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
